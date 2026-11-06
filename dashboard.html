@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPP — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #111;
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+  --border-lit: #383838;
+  --text: #d4d4d4;
+  --bright: #f0f0f0;
+  --dim: #6b6b6b;
+  --accent: #4a9eff;
+  --accent-dim: rgba(74,158,255,0.08);
+  --lime: #c8f55a;
+  --shadow: rgba(0,0,0,0.5);
+}
+
+html[data-theme="light"] {
+  --bg: #f4f4f2;
+  --surface: #ffffff;
+  --border: #e0e0dc;
+  --border-lit: #c8c8c2;
+  --text: #3a3a3a;
+  --bright: #161616;
+  --dim: #8a8a84;
+  --accent: #2a7ee0;
+  --accent-dim: rgba(74,158,255,0.1);
+  --lime: #6a8a10;
+  --shadow: rgba(0,0,0,0.08);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.mesh {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(200,245,90,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(90,180,245,0.05) 0%, transparent 60%);
+}
+
+html[data-theme="light"] .mesh {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(140,190,40,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(90,180,245,0.08) 0%, transparent 60%);
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  position: relative;
+  z-index: 10;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+
+.logo { display: flex; align-items: center; gap: 12px; }
+
+.logo-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--lime));
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #111;
+  letter-spacing: -0.5px;
+  box-shadow: 0 4px 14px var(--shadow);
+}
+
+.logo h1 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--bright);
+}
+
+.logo .sub { font-size: 11px; color: var(--dim); }
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 14px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.theme-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+.theme-btn .icon { font-size: 14px; }
+
+.slabel {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin: 28px 0 12px;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.app-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+
+.app-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.app-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  background: var(--accent-dim);
+}
+
+.app-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bright);
+}
+
+.app-card p { font-size: 11.5px; color: var(--dim); line-height: 1.55; }
+
+.app-tag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.app-tag.new { background: rgba(200,245,90,0.12); color: var(--lime); }
+
+footer {
+  margin-top: 56px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 560px) {
+  .page { padding: 32px 16px 60px; }
+  .app-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="mesh"></div>
+
+<div class="page">
+
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-mark">PPP</div>
+      <div>
+        <h1>Dashboard</h1>
+        <div class="sub">For Game Makers · Unblocked Games</div>
+      </div>
+    </div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
+      <span class="icon" id="themeIcon">☀</span>
+      <span id="themeLabel">Light</span>
+    </button>
+  </div>
+
+  <div class="slabel">Apps</div>
+  <div class="app-grid">
+    <a class="app-card" href="./site-splitter.html" target="_self">
+      <div class="app-icon">✂</div>
+      <h3>Site Splitter</h3>
+      <p>Split large site files into parts, compress huge images, and package everything into one ZIP with loaders.</p>
+      <span class="app-tag new">New</span>
+    </a>
+    <a class="app-card" href="./html2svg.html" target="_self">
+      <div class="app-icon">🛠</div>
+      <h3>SVG Wrap</h3>
+      <p>Encode HTML into a self-loading SVG wrapper for CDN delivery.</p>
+    </a>
+    <a class="app-card" href="./blog.html" target="_self">
+      <div class="app-icon">✎</div>
+      <h3>Blog</h3>
+      <p>Announcements, changelogs and notes from the PPP team.</p>
+    </a>
+  </div>
+
+  <footer>PPP · Made for Game Makers</footer>
+
+</div>
+
+<script>
+(function() {
+  var saved = null;
+  try { saved = localStorage.getItem("ppp-theme"); } catch (e) {}
+  if (saved === "light" || saved === "dark") {
+    document.documentElement.setAttribute("data-theme", saved);
+  }
+  updateThemeUI();
+})();
+
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute("data-theme");
+  var next = cur === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("ppp-theme", next); } catch (e) {}
+  updateThemeUI();
+}
+
+function updateThemeUI() {
+  var cur = document.documentElement.getAttribute("data-theme");
+  document.getElementById("themeIcon").textContent = cur === "dark" ? "☀" : "🌙";
+  document.getElementById("themeLabel").textContent = cur === "dark" ? "Light" : "Dark";
+}
+</script>
+
+</body>
+</html>
